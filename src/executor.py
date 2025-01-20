@@ -4,13 +4,20 @@ class CommandExecutor:
     def __init__(self,commands):
         self.commands = commands
     def execute(self):
+        permaconf = False
         for i,command in enumerate(self.commands):
-            confirmation = input(f"Execute command {i+1}/{len(self.commands)}: {command}, y/n/skip: ")
+            if permaconf:
+                confirmation = 'y'
+            else:
+                confirmation = input(f"Execute command {i+1}/{len(self.commands)}: {command}, y/n/runall/skip: ")
             if confirmation.lower() == 'y':
                 self._run_command(command)
                 
             elif confirmation.lower()=='skip':
                 print(f"Skipping")
+            elif confirmation.lower()=='runall':
+                self._run_command(command)
+                permaconf = True
             else:
                 print("Stopping all commands")
                 break
